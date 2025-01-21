@@ -13,7 +13,7 @@ AWS credentials are required to run the application. Follow instructions [here](
 
 Read more about [Langchain AWS](https://python.langchain.com/docs/integrations/providers/aws/)
 
-## Installation using uv in pip compatible mode
+## Installation using [uv](https://docs.astral.sh/uv/) in pip compatible mode
 
 ```bash
 uv pip install langchain langchain-aws boto3
