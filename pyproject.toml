@@ -6,6 +6,6 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "boto3>=1.36.2",
-    "langchain>=0.3.14",
+    "langchain>=0.3.15",
     "langchain-aws>=0.2.11",
 ]
