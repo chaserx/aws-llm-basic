@@ -70,11 +70,11 @@ def parse_arguments() -> argparse.Namespace:
         description="Chat with Claude 3.5 Sonnet via AWS Bedrock"
     )
     parser.add_argument(
-        "-q", 
+        "-q",
         "--question",
         type=str,
         help="Question to ask the LLM",
-        default="What is the capital of Canada?"
+        default="What is the capital of Canada?",
     )
     return parser.parse_args()
 
