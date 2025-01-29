@@ -6,6 +6,7 @@ import boto3
 import os
 import argparse
 from typing import Optional
+from yaspin import yaspin
 
 
 def setup_bedrock_client() -> ChatBedrock:
@@ -80,16 +81,22 @@ def parse_arguments() -> argparse.Namespace:
 
 def main() -> None:
     """Main function to process LLM requests."""
-    try:
-        args = parse_arguments()
-        llm = setup_bedrock_client()
-        response = get_llm_response(llm, args.question)
+    with yaspin(text="Loading...", spinner=True, color="cyan") as spinner:
+        try:
+            args = parse_arguments()
+            llm = setup_bedrock_client()
+            response = get_llm_response(llm, args.question)
+            spinner.ok("✅ ")
 
-        if response:
-            print(response)
+            if response:
+                print(response)
+            else:
+                spinner.fail("❌ ")
+                print("Error getting LLM response")
 
-    except Exception as e:
-        print(f"Application error: {str(e)}")
+        except Exception as e:
+            spinner.fail("❌ ")
+            print(f"Application error: {str(e)}")
 
 
 if __name__ == "__main__":
