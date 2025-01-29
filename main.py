@@ -4,6 +4,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_aws import ChatBedrock
 import boto3
 import os
+import argparse
 from typing import Optional
 
 
@@ -26,7 +27,7 @@ def setup_bedrock_client() -> ChatBedrock:
         model_id="us.anthropic.claude-3-5-sonnet-20241022-v2:0",
         model_kwargs={
             "max_tokens": int(os.getenv("MAX_TOKENS", "4096")),
-            "temperature": float(os.getenv("TEMPERATURE", "0.9")),
+            "temperature": float(os.getenv("TEMPERATURE", "0.0")),
         },
     )
 
@@ -58,11 +59,31 @@ def get_llm_response(llm: ChatBedrock, question: str) -> Optional[Dict]:
         return None
 
 
+def parse_arguments() -> argparse.Namespace:
+    """Parse command line arguments.
+
+    Returns:
+        argparse.Namespace: Parsed command line arguments
+    """
+    parser = argparse.ArgumentParser(
+        description="Chat with Claude 3.5 Sonnet via AWS Bedrock"
+    )
+    parser.add_argument(
+        "-q", 
+        "--question",
+        type=str,
+        help="Question to ask the LLM",
+        default="What is the capital of Canada?"
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
     """Main function to process LLM requests."""
     try:
+        args = parse_arguments()
         llm = setup_bedrock_client()
-        response = get_llm_response(llm, "What is the capital of Canada?")
+        response = get_llm_response(llm, args.question)
 
         if response:
             print(response)
